@@ -1,95 +1,28 @@
-import  express  from "express";
-import Hotel from "../models/Hotel.js";
-
-const router = express.Router();
+import express from "express";
+import {
+  createHotel,
+  deleteHotel,
+  getHotel,
+  getHotels,
+  updateHotel,
+} from "../controllers/hotel.js";
+  const router = express.Router();
 
 //CREATE
 
 // connecting to db creting collections so it's gonna take a lot of time
 //we have to use async because different taches have to run:
-router.post("/", async (req,res) => {  
-
-    const newHotel = new Hotel(req.body)
-
-    try{
-        const savedHotel = await newHotel.save()
-        res.status(200).json(savedHotel)
-        
-    }catch(err){
-
-        res.status(500).json(err)
-
-    }
-
-});
+router.post("/", createHotel);
 //UPDATE
-router.put("/:id", async (req,res) => {  
-
-    const updatedHotel = new Hotel(req.body)
-
-    try{
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body},{new: true})
-        res.status(200).json(savedHotel)
-        
-    }catch(err){
-
-        res.status(500).json(err)
-
-    }
-
-});
+router.put("/:id", updateHotel);
 //DELETE
-router.delete("/:id", async (req,res) => {  
-
-    const deletedHotel = new Hotel(req.body)
-
-    try{
-        const deletedHotel = await Hotel.findByIdAndDelete(
-            req.params.id)
-        res.status(200).json("hotel deleted succefully")
-        
-    }catch(err){
-
-        res.status(500).json(err)
-
-    }
-
-});
+router.delete("/:id", deleteHotel);
 //GET
-router.get("/:id", async (req,res) => {  
-
-    const getHotel = new Hotel(req.body)
-
-    try{
-        const getHotel = await Hotel.findById(
-            req.params.id)
-        res.status(200).json(getHotel)
-        
-    }catch(err){
-
-        res.status(500).json(err)
-
-    }
-
-});
+router.get("/:id", getHotel);
 //GETALL
-router.get("/", async (req,res) => {  
+router.get("/", getHotels);
 
-    const getAllHotels = new Hotel(req.body)
+// const failed = true
+// if(failed)return next(createError(401, "You are not authenticated!"))
 
-    try{
-       const getAllHotels = await Hotel.find()
-        res.status(200).json(getAllHotels)
-        
-    }catch(err){
-
-        res.status(500).json(err)
-
-    }
-
-});
-
-
-
-
-export default router
+export default router;
